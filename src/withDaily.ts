@@ -1,10 +1,6 @@
 import {
-  AndroidConfig, ConfigPlugin, createRunOncePlugin, withAppBuildGradle
+  AndroidConfig, ConfigPlugin, createRunOncePlugin, withAppBuildGradle, withAndroidManifest
 } from "@expo/config-plugins";
-
-import { withBuildProperties } from "expo-build-properties";
-
-//import { IOSPermissionsProps, withPermissions } from "./withPermissions";
 
 const withAppBuildGradleModified: ConfigPlugin<void> = (
   config
@@ -28,6 +24,17 @@ const withDaily: ConfigPlugin<void> = (
   config = AndroidConfig.Permissions.withPermissions(config, [
     "android.permission.FOREGROUND_SERVICE",
   ]);
+
+  config = withAndroidManifest(config, (config) => {
+    const application = AndroidConfig.Manifest.getMainApplication(config.modResults);
+    if(application && !application?.service){
+      application!.service = []
+    }
+    application?.service?.push({
+      $: { "android:name":  "com.daily.reactlibrary.DailyOngoingMeetingForegroundService" },
+    })
+    return config
+  })
 
   return config;
 };
