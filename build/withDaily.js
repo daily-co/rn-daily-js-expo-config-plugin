@@ -9,5 +9,14 @@ const withAppBuildGradleModified = (config) => {
         return file;
     });
 };
-module.exports = (0, config_plugins_1.createRunOncePlugin)(withAppBuildGradleModified, 'withAppBuildGradleMOdified', '1.0.0');
-//export default createRunOncePlugin(withDaily, pkg.name, pkg.version);
+const withDaily = (config) => {
+    // Fixing the issue from Expo with Hermes
+    // https://github.com/expo/expo/issues/17450
+    config = withAppBuildGradleModified(config);
+    // Android
+    config = config_plugins_1.AndroidConfig.Permissions.withPermissions(config, [
+        "android.permission.FOREGROUND_SERVICE",
+    ]);
+    return config;
+};
+module.exports = (0, config_plugins_1.createRunOncePlugin)(withDaily, 'withDaily', '0.0.1');

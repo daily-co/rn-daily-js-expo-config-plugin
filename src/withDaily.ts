@@ -1,5 +1,5 @@
 import {
-  ConfigPlugin, createRunOncePlugin, withAppBuildGradle
+  AndroidConfig, ConfigPlugin, createRunOncePlugin, withAppBuildGradle
 } from "@expo/config-plugins";
 
 import { withBuildProperties } from "expo-build-properties";
@@ -16,10 +16,24 @@ const withAppBuildGradleModified: ConfigPlugin<void> = (
   });
 };
 
-module.exports = createRunOncePlugin(
-  withAppBuildGradleModified,
-  'withAppBuildGradleMOdified',
-  '1.0.0'
-);
+const withDaily: ConfigPlugin<void> = (
+  config
+) => {
 
-//export default createRunOncePlugin(withDaily, pkg.name, pkg.version);
+  // Fixing the issue from Expo with Hermes
+  // https://github.com/expo/expo/issues/17450
+  config = withAppBuildGradleModified(config);
+
+  // Android
+  config = AndroidConfig.Permissions.withPermissions(config, [
+    "android.permission.FOREGROUND_SERVICE",
+  ]);
+
+  return config;
+};
+
+module.exports = createRunOncePlugin(
+  withDaily,
+  'withDaily',
+  '0.0.1'
+);
