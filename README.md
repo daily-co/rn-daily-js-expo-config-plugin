@@ -1,29 +1,36 @@
-# config-plugins/react-native-daily-js
+# @daily-co/config-plugin-rn-daily-js
 
-Config plugin to auto configure `react-native-daily-js` when the native code is generated (`npx expo prebuild`).
+Expo is an open-source framework for apps that run natively on Android, iOS, and the web. More details [here](https://docs.expo.dev/introduction/expo/).
+
+This project is an Expo config plugin to autoconfigure `react-native-daily-js` when the native code is generated (`npx expo prebuild`).
+
+Since `react-native-daily-js` and `@daily-co/react-native-webrtc` this package cannot be used in the "Expo Go" app because [it requires custom native code](https://docs.expo.io/workflow/customizing/). 
+
+More details about how to create your own development client instead of expo go in order to use native code which are not by default included on Expo can be found [here](https://docs.expo.dev/development/introduction/).
 
 ## Versioning
 
 Ensure you use versions that work together!
 
-| `expo` | `react-native-webrtc` | `@config-plugins/react-native-webrtc` |
-| ------ | --------------------- | ------------------------------------- |
-| 47.0.0 | 1.106.1               | 5.0.0                                 |
-| 46.0.0 | 1.100.0               | 4.0.0                                 |
-| 45.0.0 | 1.100.0               | 3.0.0                                 |
-| 44.0.0 | 1.92.2                | 2.0.0                                 |
-| 43.0.0 | 1.92.2                | 1.0.0                                 |
+| `expo` | `@daily-co/react-native-webrtc` | `@config-plugins/react-native-webrtc` | `@daily-co/react-native-daily-js` |`@daily-co/config-plugin-rn-daily-js` |
+|--------|---------------------------------|---------------------------------------| --------------------------------- |------------------------------------- |
+| 47.x   | 1.94.1-daily.8                  | 5.0.0                                 | 0.36.0                            |0.0.1                                 |
 
 
 ## Expo installation
 
 > Tested against Expo SDK 47
-
 > This package cannot be used in the "Expo Go" app because [it requires custom native code](https://docs.expo.io/workflow/customizing/).
-> First install the package with yarn, npm, or [`npx expo install`](https://docs.expo.io/workflow/expo-cli/#expo-install).
 
+> Install the `react-native-daily-js` dependencies as mentioned [here](https://github.com/daily-co/react-native-daily-js#installation).
 ```sh
-npx expo install react-native-webrtc @config-plugins/react-native-webrtc
+npm i @daily-co/react-native-daily-js @react-native-async-storage/async-storage@^1.15.7 react-native-background-timer@^2.3.1
+npm i --save-exact @daily-co/react-native-webrtc@1.94.1-daily.8
+```
+
+> Install Expo config plugins
+```sh
+npm i @config-plugins/react-native-webrtc @daily-co/config-plugin-rn-daily-js
 ```
 
 After installing this npm package, add the [config plugin](https://docs.expo.io/guides/config-plugins/) to the [`plugins`](https://docs.expo.io/versions/latest/config/app/#plugins) array of your `app.json` or `app.config.js`:
@@ -31,7 +38,21 @@ After installing this npm package, add the [config plugin](https://docs.expo.io/
 ```json
 {
   "expo": {
-    "plugins": ["@config-plugins/react-native-webrtc"]
+    "plugins": [
+      "@config-plugins/react-native-webrtc",
+      "@daily-co/config-plugin-rn-daily-js",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "minSdkVersion": 24
+          },
+          "ios": {
+            "deploymentTarget": "13.0"
+          }
+        }
+      ]
+    ]
   }
 }
 ```
