@@ -4,7 +4,7 @@ Expo is an open-source framework for apps that run natively on Android, iOS, and
 
 This project is an Expo config plugin to autoconfigure `react-native-daily-js` when the native code is generated (`npx expo prebuild`).
 
-Since `react-native-daily-js` and `@daily-co/react-native-webrtc` this package cannot be used in the "Expo Go" app because [it requires custom native code](https://docs.expo.io/workflow/customizing/). 
+This package cannot be used in the "Expo Go" app because [it requires custom native code](https://docs.expo.io/workflow/customizing/). 
 
 More details about how to create your own development client instead of expo go in order to use native code which are not by default included on Expo can be found [here](https://docs.expo.dev/development/introduction/).
 
