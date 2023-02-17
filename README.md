@@ -77,4 +77,4 @@ After installing all the dependencies, rebuild your app as described in the ["Ad
 ## Extra customization
 
 The `@config-plugins/react-native-webrtc` provides props for extra customization, for instance, to define the camera and microphone permissions prompt messages.
-Look at the [plugin API](https://github.com/expo/config-plugins/tree/main/packages/react-native-webrtc) to understand how you can use It.
+See the [plugin API](https://github.com/expo/config-plugins/tree/main/packages/react-native-webrtc) to learn more.
