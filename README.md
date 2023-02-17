@@ -7,7 +7,7 @@ This project cannot be used with an [Expo Go](https://docs.expo.dev/workflow/exp
 When a project requires custom native code or a config plugin, we need to transition from using [Expo Go](https://docs.expo.dev/workflow/expo-go/)
 to a [development build](https://docs.expo.dev/development/introduction/).
 
-Using this plugin It will autoconfigure the [react-native-daily-js](https://github.com/daily-co/react-native-daily-js) requirements when the native code is generated (`npx expo prebuild`).
+This plugin will automatically configure your native code when it's generated (e.g. with `npx expo prebuild`) so that it can be used with [react-native-daily-js](https://github.com/daily-co/react-native-daily-js).
 
 ## Versioning
 
