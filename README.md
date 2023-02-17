@@ -3,9 +3,7 @@
 [Expo](https://docs.expo.dev/introduction/expo/) is an open-source framework for apps that run natively on Android, iOS, and the web.
 
 This project cannot be used with an [Expo Go](https://docs.expo.dev/workflow/expo-go/) app because [it requires custom native code](https://docs.expo.io/workflow/customizing/).
-
-When a project requires custom native code or a config plugin, we need to transition from using [Expo Go](https://docs.expo.dev/workflow/expo-go/)
-to a [development build](https://docs.expo.dev/development/introduction/).
+Follow the steps in the article on how to make your own development build or prebuild your native projects.
 
 This plugin will automatically configure your native code when it's generated (e.g. with `npx expo prebuild`) so that it can be used with [react-native-daily-js](https://github.com/daily-co/react-native-daily-js).
 
