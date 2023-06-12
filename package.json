@@ -28,9 +28,15 @@
     "expo": "^48.0.15"
   },
   "devDependencies": {
-    "expo-module-scripts": "^3.0.3"
+    "expo-module-scripts": "^3.0.9"
+  },
+  "//": "Override vulnerable dependency until expo updates it.",
+  "//": "https://github.com/expo/expo/issues/21374",
+  "resolutions": {
+    "expo-module-scripts/babel-preset-expo/babel-plugin-module-resolver": "^5.0.0",
+    "expo-module-scripts/jest-expo/@expo/config/@expo/config-plugins/xml2js": "^0.6.0"
   },
   "dependencies": {
-    "expo-build-properties": "~0.4.0"
+    "expo-build-properties": "~0.6.0"
   }
 }
