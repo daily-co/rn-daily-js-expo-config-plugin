@@ -28,7 +28,7 @@
     "expo": "^49"
   },
   "devDependencies": {
-    "expo-module-scripts": "^3.0.11"
+    "expo-module-scripts": "^3.1.0"
   },
   "//": "Override vulnerable dependency until expo updates it.",
   "resolutions": {
