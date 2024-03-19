@@ -13,6 +13,7 @@ Ensure you use versions that work together!
 
 | `expo` | `@daily-co/react-native-webrtc` | `@config-plugins/react-native-webrtc` | `@daily-co/react-native-daily-js` | `@daily-co/config-plugin-rn-daily-js` |
 |--------|---------------------------------|---------------------------------------|-----------------------------------|---------------------------------------|
+| 50.x   | 118.0.3-daily.1                 | 8.0.0                                 | 0.59.0                            | 0.0.4                                 |
 | 49.x   | 111.0.0-daily.2                 | 7.0.0                                 | 0.49.0                            | 0.0.3                                 |
 | 48.x   | 111.0.0-daily.1                 | 6.0.0                                 | 0.43.0                            | 0.0.2                                 |
 | 47.x   | 1.94.1-daily.8                  | 5.0.0                                 | 0.36.0                            | 0.0.1                                 |
@@ -28,8 +29,8 @@ Ensure you use versions that work together!
 Install the `react-native-daily-js` dependencies as mentioned [here](https://github.com/daily-co/react-native-daily-js#installation).
 
 ```sh
-npm i @daily-co/react-native-daily-js @react-native-async-storage/async-storage@^1.15.7 react-native-background-timer@^2.3.1
-npm i --save-exact @daily-co/react-native-webrtc@1.94.1-daily.8
+npm i @daily-co/react-native-daily-js @react-native-async-storage/async-storage@^1.15.7 react-native-background-timer@^2.3.1 expo-random@^13.6.0 react-native-get-random-values@^1.10.0
+npm i --save-exact @daily-co/react-native-webrtc@118.0.3-daily.1
 ```
 
 ### Install Expo config plugins
