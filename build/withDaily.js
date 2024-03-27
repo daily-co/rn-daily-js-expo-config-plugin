@@ -14,7 +14,8 @@ const withDaily = (config) => {
     config = withAppBuildGradleModified(config);
     // Android
     config = config_plugins_1.AndroidConfig.Permissions.withPermissions(config, [
-        "android.permission.FOREGROUND_SERVICE",
+        "android.permission.FOREGROUND_SERVICE", "android.permission.FOREGROUND_SERVICE_CAMERA", "android.permission.FOREGROUND_SERVICE_MICROPHONE",
+        "android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION", "android.permission.POST_NOTIFICATIONS"
     ]);
     config = (0, config_plugins_1.withAndroidManifest)(config, (config) => {
         const application = config_plugins_1.AndroidConfig.Manifest.getMainApplication(config.modResults);
@@ -22,7 +23,12 @@ const withDaily = (config) => {
             application.service = [];
         }
         application?.service?.push({
-            $: { "android:name": "com.daily.reactlibrary.DailyOngoingMeetingForegroundService" },
+            $: {
+                "android:name": "com.daily.reactlibrary.DailyOngoingMeetingForegroundService",
+                "android:exported": "false",
+                // @ts-ignore
+                "android:foregroundServiceType": "camera|microphone"
+            },
         });
         return config;
     });

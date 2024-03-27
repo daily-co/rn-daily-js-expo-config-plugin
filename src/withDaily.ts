@@ -22,7 +22,8 @@ const withDaily: ConfigPlugin<void> = (
 
   // Android
   config = AndroidConfig.Permissions.withPermissions(config, [
-    "android.permission.FOREGROUND_SERVICE",
+    "android.permission.FOREGROUND_SERVICE", "android.permission.FOREGROUND_SERVICE_CAMERA", "android.permission.FOREGROUND_SERVICE_MICROPHONE",
+    "android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION", "android.permission.POST_NOTIFICATIONS"
   ]);
 
   config = withAndroidManifest(config, (config) => {
@@ -31,7 +32,12 @@ const withDaily: ConfigPlugin<void> = (
       application!.service = []
     }
     application?.service?.push({
-      $: { "android:name":  "com.daily.reactlibrary.DailyOngoingMeetingForegroundService" },
+      $: {
+        "android:name":  "com.daily.reactlibrary.DailyOngoingMeetingForegroundService",
+        "android:exported": "false",
+        // @ts-ignore
+        "android:foregroundServiceType": "camera|microphone"
+      },
     })
     return config
   })
