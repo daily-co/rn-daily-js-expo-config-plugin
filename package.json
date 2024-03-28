@@ -1,6 +1,6 @@
 {
   "name": "@daily-co/config-plugin-rn-daily-js",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Config plugin to setup react-native-daily-js on prebuild",
   "main": "build/withDaily.js",
   "types": "build/withDaily.d.ts",
