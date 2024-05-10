@@ -86,3 +86,4 @@ See the [plugin API](https://github.com/expo/config-plugins/tree/main/packages/r
 - This issue may happen when using Expo 50 and `@daily-co/react-native-webrtc` 118.
 - `event-target-shim` version must match the same one requested by `@daily-co/react-native-webrtc`: `"event-target-shim": "6.0.2"`.
 - You can check inside `package-lock.json` to be sure you are using the right version.
+- If your version of `event-target-shim` doesn't match the one requested by `@daily-co/react-native-webrtc`,  you can try to update running the following: `npm update event-target-shim`
