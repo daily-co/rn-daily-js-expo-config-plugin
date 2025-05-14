@@ -409,15 +409,6 @@ const addBuildPhases = (
   );
   console.log(`Added PBXCopyFilesBuildPhase ${dailyFrameworksBuildPhaseUuid}`);
 
-  //TODO: fix here
-  // Mark the framework to be embedded and code signed
-  //const dailyFrameworkFile = proj.getFileByPath(frameworkPaths.dailyScreenShare);
-  //if (dailyFrameworkFile) {
-  //  dailyFrameworkFile.settings = {
-  //    ATTRIBUTES: ['CodeSignOnCopy', 'RemoveHeadersOnCopy'],
-  //  };
-  //}
-
   // Resources build phase
   const { uuid: resourcesBuildPhaseUuid } = proj.addBuildPhase(
       [],

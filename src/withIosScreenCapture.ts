@@ -82,11 +82,6 @@ const withInfoPlistRTC: ConfigPlugin = (config) => {
     config.modResults['RTCAppGroupIdentifier'] = appGroupIdentifier;
     config.modResults['DailyScreenCaptureExtensionBundleIdentifier'] = extensionBundleIdentifier;
 
-    /*if (!config.modResults['UIBackgroundModes']) {
-      config.modResults['UIBackgroundModes'] = [];
-    }
-    config.modResults['UIBackgroundModes'].push('voip');*/
-
     return config;
   });
 };
