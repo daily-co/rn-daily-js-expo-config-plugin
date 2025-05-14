@@ -187,7 +187,7 @@ const addXCConfigurationList = (
     INFOPLIST_FILE: `${extensionName}/Info.plist`,
     INFOPLIST_KEY_CFBundleDisplayName: `${extensionName}`,
     INFOPLIST_KEY_NSHumanReadableCopyright: quoted(''),
-    IPHONEOS_DEPLOYMENT_TARGET: '14.0',
+    IPHONEOS_DEPLOYMENT_TARGET: '15.1',
     LD_RUNPATH_SEARCH_PATHS: quoted(
       '$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks'
     ),
@@ -241,7 +241,7 @@ const addXCConfigurationList = (
     proj.getFirstTarget().firstTarget.name
   );
 
-  proj.updateBuildProperty('IPHONEOS_DEPLOYMENT_TARGET', '14.0');
+  proj.updateBuildProperty('IPHONEOS_DEPLOYMENT_TARGET', '15.1');
 
 
   return xCConfigurationList;
