@@ -24,7 +24,7 @@ const withBroadcastExtensionHandler: ConfigPlugin = (config) => {
     async (config) => {
       const extensionRootPath = path.join(
         config.modRequest.platformProjectRoot,
-        'broadcast'
+        'ScreenCaptureExtension'
       );
       await fs.promises.mkdir(extensionRootPath, { recursive: true });
       await fs.promises.copyFile(
@@ -42,7 +42,7 @@ const withBroadcastExtensionPlist: ConfigPlugin = (config) => {
     async (config) => {
       const extensionRootPath = path.join(
         config.modRequest.platformProjectRoot,
-        'broadcast'
+        'ScreenCaptureExtension'
       );
       const extensionPlistPath = path.join(extensionRootPath, 'Info.plist');
 
@@ -70,7 +70,7 @@ const withBroadcastExtensionPlist: ConfigPlugin = (config) => {
 const withBroadcastExtensionXcodeTarget: ConfigPlugin = (config) => {
   return withXcodeProject(config, async (config) => {
     const appName = config.modRequest.projectName!;
-    const extensionName = 'broadcast';
+    const extensionName = 'ScreenCaptureExtension';
     const extensionBundleIdentifier = `${config.ios!
       .bundleIdentifier!}.broadcast`;
     const currentProjectVersion = config.ios!.buildNumber || '1';
@@ -435,8 +435,8 @@ const addPbxGroup = (proj: XcodeProject, productFile: any) => {
   // Add PBX group
   const { uuid: pbxGroupUuid } = proj.addPbxGroup(
     ['SampleHandler.swift', 'Info.plist'],
-    'broadcast',
-    'broadcast'
+    'ScreenCaptureExtension',
+    'ScreenCaptureExtension'
   );
   console.log(`Added PBXGroup ${pbxGroupUuid}`);
 
