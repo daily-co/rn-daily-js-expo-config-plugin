@@ -1,6 +1,7 @@
 import {
   AndroidConfig, ConfigPlugin, createRunOncePlugin, withAppBuildGradle, withAndroidManifest
 } from "@expo/config-plugins";
+import withIosBroadcastExtension from "./withIosBroadcastExtension";
 
 const withAppBuildGradleModified: ConfigPlugin<void> = (
   config
@@ -12,9 +13,14 @@ const withAppBuildGradleModified: ConfigPlugin<void> = (
   });
 };
 
-const withDaily: ConfigPlugin<void> = (
-  config
+type DailyProps = {
+  enableScreenShare?: boolean;
+};
+
+const withDaily: ConfigPlugin<DailyProps> = (
+  config, props = {}
 ) => {
+  const { enableScreenShare = false } = props;
 
   // Fixing the issue from Expo with Hermes
   // https://github.com/expo/expo/issues/17450
@@ -39,8 +45,13 @@ const withDaily: ConfigPlugin<void> = (
         "android:foregroundServiceType": "camera|microphone"
       },
     })
+
     return config
   })
+
+  if (enableScreenShare) {
+    config = withIosBroadcastExtension(config);
+  }
 
   return config;
 };
