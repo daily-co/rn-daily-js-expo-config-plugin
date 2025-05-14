@@ -137,14 +137,26 @@ const addBroadcastExtensionXcodeTarget = async (
     target: target.uuid,
     link: false,
   });
-  const frameworkPath = frameworkFile.path;
+  const replayKitFrameworkPath: string = frameworkFile.path;
   console.log(`Added ReplayKit.framework to target ${target.uuid}`);
+
+  const dailyScreenShareFramework = 'Pods/ReactNativeDailyJSScreenShareExtension/ReactNativeDailyJSScreenShareExtension.xcframework';
+  const customFrameworkFile = proj.addFramework(dailyScreenShareFramework, {
+    target: target.uuid,
+    customFramework: true,
+    embed: true,
+  });
+  const dailyScreenShareFrameworkPath: string = customFrameworkFile.path;
+  console.log(`Added ReactNativeDailyJSScreenShareExtension.framework to target ${target.uuid}`);
 
   addBuildPhases(proj, {
     groupName,
     productFile,
     targetUuid,
-    frameworkPath,
+    frameworkPaths:{
+      replayKit: replayKitFrameworkPath,
+      dailyScreenShare: dailyScreenShareFrameworkPath
+    }
   });
 
   addPbxGroup(proj, productFile);
@@ -344,12 +356,15 @@ type AddBuildPhaseParams = {
   groupName: string;
   productFile: any;
   targetUuid: string;
-  frameworkPath: string;
+  frameworkPaths: {
+    replayKit: string;
+    dailyScreenShare: string;
+  };
 };
 
 const addBuildPhases = (
   proj: XcodeProject,
-  { groupName, productFile, targetUuid, frameworkPath }: AddBuildPhaseParams
+  { groupName, productFile, targetUuid, frameworkPaths }: AddBuildPhaseParams
 ) => {
   const buildPath = quoted('');
 
@@ -376,15 +391,33 @@ const addBuildPhases = (
   console.log(`Added PBXCopyFilesBuildPhase ${copyFilesBuildPhaseUuid}`);
 
   // Frameworks build phase
-  const { uuid: frameworksBuildPhaseUuid } = proj.addBuildPhase(
-    [frameworkPath],
+  const { uuid: replayKitFrameworksBuildPhaseUuid } = proj.addBuildPhase(
+    [frameworkPaths.replayKit],
     'PBXFrameworksBuildPhase',
     'Frameworks',
     targetUuid,
     'app_extension',
     buildPath
   );
-  console.log(`Added PBXFrameworksBuildPhase ${frameworksBuildPhaseUuid}`);
+  console.log(`Added PBXFrameworksBuildPhase ${replayKitFrameworksBuildPhaseUuid}`);
+  const { uuid: dailyFrameworksBuildPhaseUuid } = proj.addBuildPhase(
+      [frameworkPaths.dailyScreenShare],
+      'PBXCopyFilesBuildPhase',
+      'Frameworks',
+      targetUuid,
+      'app_extension',
+      buildPath
+  );
+  console.log(`Added PBXCopyFilesBuildPhase ${dailyFrameworksBuildPhaseUuid}`);
+
+  //TODO: fix here
+  // Mark the framework to be embedded and code signed
+  //const dailyFrameworkFile = proj.getFileByPath(frameworkPaths.dailyScreenShare);
+  //if (dailyFrameworkFile) {
+  //  dailyFrameworkFile.settings = {
+  //    ATTRIBUTES: ['CodeSignOnCopy', 'RemoveHeadersOnCopy'],
+  //  };
+  //}
 
   // Resources build phase
   const { uuid: resourcesBuildPhaseUuid } = proj.addBuildPhase(
