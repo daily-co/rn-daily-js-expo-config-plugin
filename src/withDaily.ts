@@ -1,7 +1,8 @@
 import {
-  AndroidConfig, ConfigPlugin, createRunOncePlugin, withAppBuildGradle, withAndroidManifest
+  AndroidConfig, ConfigPlugin, createRunOncePlugin, withAppBuildGradle, withAndroidManifest, withPlugins
 } from "@expo/config-plugins";
 import withIosBroadcastExtension from "./withIosBroadcastExtension";
+import withIosScreenCapture from "./withIosScreenCapture";
 
 const withAppBuildGradleModified: ConfigPlugin<void> = (
   config
@@ -50,7 +51,10 @@ const withDaily: ConfigPlugin<DailyProps> = (
   })
 
   if (enableScreenShare) {
-    config = withIosBroadcastExtension(config);
+    config = withPlugins(config, [
+      withIosScreenCapture,
+      withIosBroadcastExtension,
+    ]);
   }
 
   return config;

@@ -72,7 +72,7 @@ const withBroadcastExtensionXcodeTarget: ConfigPlugin = (config) => {
     const appName = config.modRequest.projectName!;
     const extensionName = 'ScreenCaptureExtension';
     const extensionBundleIdentifier = `${config.ios!
-      .bundleIdentifier!}.broadcast`;
+      .bundleIdentifier!}.ScreenCaptureExtension`;
     const currentProjectVersion = config.ios!.buildNumber || '1';
     const marketingVersion = config.version!;
 
@@ -132,7 +132,6 @@ const addBroadcastExtensionXcodeTarget = async (
 
   addTargetDependency(proj, target);
 
-  // TODO: maybe here is how we should add our Framework
   const frameworkFile = proj.addFramework('ReplayKit.framework', {
     target: target.uuid,
     link: false,
@@ -363,7 +362,7 @@ type AddBuildPhaseParams = {
 };
 
 const addBuildPhases = (
-  proj: XcodeProject,
+    proj: XcodeProject,
   { groupName, productFile, targetUuid, frameworkPaths }: AddBuildPhaseParams
 ) => {
   const buildPath = quoted('');
@@ -371,22 +370,22 @@ const addBuildPhases = (
   // Sources build phase
   const { uuid: sourcesBuildPhaseUuid } = proj.addBuildPhase(
     [`SampleHandler.swift`],
-    'PBXSourcesBuildPhase',
-    'Sources',
-    targetUuid,
-    'app_extension',
-    buildPath
+      'PBXSourcesBuildPhase',
+      'Sources',
+      targetUuid,
+      'app_extension',
+      buildPath
   );
   console.log(`Added PBXSourcesBuildPhase ${sourcesBuildPhaseUuid}`);
 
   // Copy files build phase
   const { uuid: copyFilesBuildPhaseUuid } = proj.addBuildPhase(
-    [productFile.path],
-    'PBXCopyFilesBuildPhase',
-    groupName,
-    proj.getFirstTarget().uuid,
-    'app_extension',
-    buildPath
+      [productFile.path],
+      'PBXCopyFilesBuildPhase',
+      groupName,
+      proj.getFirstTarget().uuid,
+      'app_extension',
+      buildPath
   );
   console.log(`Added PBXCopyFilesBuildPhase ${copyFilesBuildPhaseUuid}`);
 
@@ -421,12 +420,12 @@ const addBuildPhases = (
 
   // Resources build phase
   const { uuid: resourcesBuildPhaseUuid } = proj.addBuildPhase(
-    [],
-    'PBXResourcesBuildPhase',
-    'Resources',
-    targetUuid,
-    'app_extension',
-    buildPath
+      [],
+      'PBXResourcesBuildPhase',
+      'Resources',
+      targetUuid,
+      'app_extension',
+      buildPath
   );
   console.log(`Added PBXResourcesBuildPhase ${resourcesBuildPhaseUuid}`);
 };
@@ -451,7 +450,7 @@ const addPbxGroup = (proj: XcodeProject, productFile: any) => {
         );
       } else if (groups[key].name === 'Products') {
         proj.addToPbxGroup(productFile, key);
-        console.log(`Added broadcast.apex to Products PBXGroup`);
+        console.log(`Added ScreenCaptureExtension.apex to Products PBXGroup`);
       }
     });
   }
