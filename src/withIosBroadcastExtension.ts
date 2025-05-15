@@ -11,6 +11,8 @@ import * as path from 'path';
 
 import { quoted } from './utils';
 
+const EXTENSION_NAME = 'ScreenCaptureExtension';
+const IPHONE_DEPLOYMENT_TARGET = '15.1';
 const withIosBroadcastExtension: ConfigPlugin = (config) => {
   config = withBroadcastExtensionHandler(config);
   config = withBroadcastExtensionPlist(config);
@@ -24,7 +26,7 @@ const withBroadcastExtensionHandler: ConfigPlugin = (config) => {
     async (config) => {
       const extensionRootPath = path.join(
         config.modRequest.platformProjectRoot,
-        'ScreenCaptureExtension'
+        EXTENSION_NAME
       );
       await fs.promises.mkdir(extensionRootPath, { recursive: true });
       await fs.promises.copyFile(
@@ -42,7 +44,7 @@ const withBroadcastExtensionPlist: ConfigPlugin = (config) => {
     async (config) => {
       const extensionRootPath = path.join(
         config.modRequest.platformProjectRoot,
-        'ScreenCaptureExtension'
+        EXTENSION_NAME
       );
       const extensionPlistPath = path.join(extensionRootPath, 'Info.plist');
 
@@ -70,7 +72,7 @@ const withBroadcastExtensionPlist: ConfigPlugin = (config) => {
 const withBroadcastExtensionXcodeTarget: ConfigPlugin = (config) => {
   return withXcodeProject(config, async (config) => {
     const appName = config.modRequest.projectName!;
-    const extensionName = 'ScreenCaptureExtension';
+    const extensionName = EXTENSION_NAME;
     const extensionBundleIdentifier = `${config.ios!
       .bundleIdentifier!}.ScreenCaptureExtension`;
     const currentProjectVersion = config.ios!.buildNumber || '1';
@@ -187,7 +189,7 @@ const addXCConfigurationList = (
     INFOPLIST_FILE: `${extensionName}/Info.plist`,
     INFOPLIST_KEY_CFBundleDisplayName: `${extensionName}`,
     INFOPLIST_KEY_NSHumanReadableCopyright: quoted(''),
-    IPHONEOS_DEPLOYMENT_TARGET: '15.1',
+    IPHONEOS_DEPLOYMENT_TARGET: IPHONE_DEPLOYMENT_TARGET,
     LD_RUNPATH_SEARCH_PATHS: quoted(
       '$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks'
     ),
@@ -241,7 +243,7 @@ const addXCConfigurationList = (
     proj.getFirstTarget().firstTarget.name
   );
 
-  proj.updateBuildProperty('IPHONEOS_DEPLOYMENT_TARGET', '15.1');
+  proj.updateBuildProperty('IPHONEOS_DEPLOYMENT_TARGET', IPHONE_DEPLOYMENT_TARGET);
 
 
   return xCConfigurationList;
@@ -425,8 +427,8 @@ const addPbxGroup = (proj: XcodeProject, productFile: any) => {
   // Add PBX group
   const { uuid: pbxGroupUuid } = proj.addPbxGroup(
     ['SampleHandler.swift', 'Info.plist'],
-    'ScreenCaptureExtension',
-    'ScreenCaptureExtension'
+    EXTENSION_NAME,
+    EXTENSION_NAME
   );
   console.log(`Added PBXGroup ${pbxGroupUuid}`);
 

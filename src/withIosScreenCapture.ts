@@ -1,89 +1,114 @@
 import {
-  withXcodeProject,
-  ConfigPlugin,
-  InfoPlist,
-  withEntitlementsPlist,
-  withInfoPlist,
+    withXcodeProject,
+    ConfigPlugin,
+    InfoPlist,
+    withEntitlementsPlist,
+    withInfoPlist,
 } from '@expo/config-plugins';
 import plist from '@expo/plist';
 import * as fs from 'fs';
 import * as path from 'path';
 
+// Helper to safely get the bundle identifier
+const getBundleIdentifier = (config: Parameters<ConfigPlugin>[0]): string => {
+    const bundleId = config.ios?.bundleIdentifier;
+    if (!bundleId) {
+        throw new Error(
+            'iOS bundleIdentifier is required for withIosScreenCapture plugin.'
+        );
+    }
+    return bundleId;
+};
+
+/**
+ * Main plugin that composes all screen capture iOS modifications.
+ */
 const withIosScreenCapture: ConfigPlugin = (config) => {
-  config = withAppEntitlements(config);
-  config = withBroadcastEntitlements(config);
-  config = withInfoPlistRTC(config);
-  return config;
+    config = withAppEntitlements(config);
+    config = withBroadcastEntitlements(config);
+    config = withInfoPlistRTC(config);
+    return config;
 };
 
+/**
+ * Adds required App Group entitlement to the main app.
+ */
 const withAppEntitlements: ConfigPlugin = (config) => {
-  config = withEntitlementsPlist(config, (config) => {
-    const appGroupIdentifier = `group.${config.ios!.bundleIdentifier!}`;
-    config.modResults['com.apple.security.application-groups'] = [
-      appGroupIdentifier,
-    ];
-    return config;
-  });
-  return config;
+    return withEntitlementsPlist(config, (config) => {
+        const appGroupIdentifier = `group.${getBundleIdentifier(config)}`;
+        config.modResults['com.apple.security.application-groups'] = [
+            appGroupIdentifier,
+        ];
+        return config;
+    });
 };
 
+/**
+ * Creates and injects entitlements into the Broadcast Extension.
+ */
 const withBroadcastEntitlements: ConfigPlugin = (config) => {
-  return withXcodeProject(config, async (config) => {
-    const appGroupIdentifier = `group.${config.ios!.bundleIdentifier!}`;
-    const extensionRootPath = path.join(
-      config.modRequest.platformProjectRoot,
-      'ScreenCaptureExtension'
-    );
-    const entitlementsPath = path.join(
-      extensionRootPath,
-      'ScreenCaptureExtension.entitlements'
-    );
+    return withXcodeProject(config, async (config) => {
+        const bundleId = getBundleIdentifier(config);
+        const appGroupIdentifier = `group.${bundleId}`;
 
-    const extensionEntitlements: InfoPlist = {
-      'com.apple.security.application-groups': [appGroupIdentifier],
-    };
+        const extensionRootPath = path.join(
+            config.modRequest.platformProjectRoot,
+            'ScreenCaptureExtension'
+        );
+        const entitlementsPath = path.join(
+            extensionRootPath,
+            'ScreenCaptureExtension.entitlements'
+        );
 
-    // create file
-    await fs.promises.mkdir(path.dirname(entitlementsPath), {
-      recursive: true,
+        const extensionEntitlements: InfoPlist = {
+            'com.apple.security.application-groups': [appGroupIdentifier],
+        };
+
+        // Ensure directory exists
+        await fs.promises.mkdir(path.dirname(entitlementsPath), {
+            recursive: true,
+        });
+        await fs.promises.writeFile(
+            entitlementsPath,
+            plist.build(extensionEntitlements)
+        );
+
+        // Add file to Xcode project
+        const proj = config.modResults;
+        const targetUuid = proj.findTargetKey('ScreenCaptureExtension');
+        const groupUuid = proj.findPBXGroupKey({name: 'ScreenCaptureExtension'});
+
+        proj.addFile('ScreenCaptureExtension.entitlements', groupUuid, {
+            target: targetUuid,
+            lastKnownFileType: 'text.plist.entitlements',
+        });
+
+        proj.updateBuildProperty(
+            'CODE_SIGN_ENTITLEMENTS',
+            'ScreenCaptureExtension/ScreenCaptureExtension.entitlements',
+            null,
+            'ScreenCaptureExtension'
+        );
+
+        return config;
     });
-    await fs.promises.writeFile(
-      entitlementsPath,
-      plist.build(extensionEntitlements)
-    );
-
-    // add file to extension group
-    const proj = config.modResults;
-    const targetUuid = proj.findTargetKey('ScreenCaptureExtension');
-    const groupUuid = proj.findPBXGroupKey({ name: 'ScreenCaptureExtension' });
-
-    proj.addFile('ScreenCaptureExtension.entitlements', groupUuid, {
-      target: targetUuid,
-      lastKnownFileType: 'text.plist.entitlements',
-    });
-
-    // update build properties
-    proj.updateBuildProperty(
-      'CODE_SIGN_ENTITLEMENTS',
-      'ScreenCaptureExtension/ScreenCaptureExtension.entitlements',
-      null,
-      'ScreenCaptureExtension'
-    );
-
-    return config;
-  });
 };
 
+/**
+ * Injects required keys into Info.plist for screen capture.
+ */
 const withInfoPlistRTC: ConfigPlugin = (config) => {
-  return withInfoPlist(config, (config) => {
-    const appGroupIdentifier = `group.${config.ios!.bundleIdentifier!}`;
-    const extensionBundleIdentifier = `${config.ios!.bundleIdentifier!}.ScreenCaptureExtension`;
+    return withInfoPlist(config, (config) => {
+        const bundleId = getBundleIdentifier(config);
+        const appGroupIdentifier = `group.${bundleId}`;
+        const extensionBundleIdentifier = `${bundleId}.ScreenCaptureExtension`;
 
-    config.modResults['RTCAppGroupIdentifier'] = appGroupIdentifier;
-    config.modResults['DailyScreenCaptureExtensionBundleIdentifier'] = extensionBundleIdentifier;
+        config.modResults['RTCAppGroupIdentifier'] = appGroupIdentifier;
+        config.modResults['DailyScreenCaptureExtensionBundleIdentifier'] =
+            extensionBundleIdentifier;
 
-    return config;
-  });
+        return config;
+    });
 };
 
 export default withIosScreenCapture;
