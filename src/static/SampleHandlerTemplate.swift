@@ -3,7 +3,7 @@ import ReactNativeDailyJSScreenShareExtension
 public class SampleHandler: DailyRPHandler {
 
   override init() {
-    super.init(appGroupIdentifier: "group.co.daily.DailyPlayground")
+    super.init(appGroupIdentifier: "group.example.Example")
   }
 
 }

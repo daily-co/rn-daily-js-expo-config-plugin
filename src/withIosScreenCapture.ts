@@ -27,6 +27,7 @@ const withIosScreenCapture: ConfigPlugin = (config) => {
     config = withAppEntitlements(config);
     config = withBroadcastEntitlements(config);
     config = withInfoPlistRTC(config);
+    config = withReplaceAppGroup(config);
     return config;
 };
 
@@ -106,6 +107,31 @@ const withInfoPlistRTC: ConfigPlugin = (config) => {
         config.modResults['RTCAppGroupIdentifier'] = appGroupIdentifier;
         config.modResults['DailyScreenCaptureExtensionBundleIdentifier'] =
             extensionBundleIdentifier;
+
+        return config;
+    });
+};
+
+/**
+ * Replaces the app group from the SampleHandler.swift
+ */
+const withReplaceAppGroup: ConfigPlugin = (config) => {
+    return withXcodeProject(config, async (config) => {
+        const bundleId = getBundleIdentifier(config);
+        const appGroupIdentifier = `group.${bundleId}`;
+        const extensionRootPath = path.join(
+            config.modRequest.platformProjectRoot,
+            'ScreenCaptureExtension'
+        );
+        // Update app group bundle id in SampleHandler code
+        const code = await fs.promises.readFile(
+            path.join(extensionRootPath, 'SampleHandler.swift'),
+            { encoding: 'utf-8' }
+        );
+        await fs.promises.writeFile(
+            path.join(extensionRootPath, 'SampleHandler.swift'),
+            code.replace('group.example.Example', appGroupIdentifier)
+        );
 
         return config;
     });
