@@ -13,6 +13,7 @@ Ensure you use versions that work together!
 
 | `expo` | `@daily-co/react-native-webrtc` | `@config-plugins/react-native-webrtc` | `@daily-co/react-native-daily-js` | `@daily-co/config-plugin-rn-daily-js` |
 |--------|---------------------------------|---------------------------------------|-----------------------------------|---------------------------------------|
+| 52.x   | 118.0.3-daily.2                 | 10.0.0                                | 0.76.0                            | 0.0.8                                 |
 | 52.x   | 118.0.3-daily.2                 | 10.0.0                                | 0.70.0                            | 0.0.7                                 |
 | 51.x   | 118.0.3-daily.2                 | 9.0.0                                 | 0.64.0                            | 0.0.6                                 |
 | 50.x   | 118.0.3-daily.2                 | 8.0.0                                 | 0.59.0                            | 0.0.5                                 |
@@ -72,6 +73,29 @@ After installing these packages, add the [config plugin](https://docs.expo.io/gu
   }
 }
 ```
+
+### Screen Sharing Support
+
+Starting with version **0.0.8**, the `@daily-co/config-plugin-rn-daily-js` plugin now supports **screen sharing** on iOS via the `ScreenCaptureExtension`.
+
+#### How to Enable
+
+To enable screen sharing, add the plugin to your `app.json` with the `enableScreenShare` property set to `true`:
+
+```json
+[
+  "@daily-co/config-plugin-rn-daily-js",
+  {
+    "enableScreenShare": true
+  }
+]
+```
+> If `enableScreenShare` is not set or is false, the plugin will not attempt to create the `ScreenCaptureExtension`.
+
+The App Group ID used for screen sharing will follow this format:
+- `group.<your_app_bundle_identifier>`
+
+> It only works with v0.0.8 or above.
 
 ## Expo build
 
