@@ -3,7 +3,7 @@ import {
 } from "@expo/config-plugins";
 import withIosBroadcastExtension from "./withIosBroadcastExtension";
 import withIosScreenCapture from "./withIosScreenCapture";
-import {IOSPermissionsProps, withPermissions} from "./withPermissions";
+import {DailyPermissionsProps, withPermissions} from "./withPermissions";
 
 const withAppBuildGradleModified: ConfigPlugin<void> = (
   config
@@ -15,21 +15,16 @@ const withAppBuildGradleModified: ConfigPlugin<void> = (
   });
 };
 
-type DailyProps = {
-  enableScreenShare?: boolean;
-  iOSPermissions?: IOSPermissionsProps;
-};
-
-const withDaily: ConfigPlugin<DailyProps> = (
+const withDaily: ConfigPlugin<DailyPermissionsProps> = (
   config, props = {}
 ) => {
-  const { enableScreenShare = false, iOSPermissions = {} } = props;
+  const { enableScreenShare = false } = props;
 
   // Fixing the issue from Expo with Hermes
   // https://github.com/expo/expo/issues/17450
   config = withAppBuildGradleModified(config);
 
-  config = withPermissions(config, iOSPermissions);
+  config = withPermissions(config, props);
 
   config = withAndroidManifest(config, (config) => {
     const application = AndroidConfig.Manifest.getMainApplication(config.modResults);

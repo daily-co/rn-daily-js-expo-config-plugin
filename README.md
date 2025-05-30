@@ -58,8 +58,14 @@ After installing these packages, add the [config plugin](https://docs.expo.io/gu
       }
     },
     "plugins": [
-      "@config-plugins/react-native-webrtc",
-      "@daily-co/config-plugin-rn-daily-js",
+      [
+        "@daily-co/config-plugin-rn-daily-js",
+        {
+          "enableCamera": true,
+          "enableMicrophone": true,
+          "enableScreenShare": true
+        }
+      ],
       [
         "expo-build-properties",
         {
