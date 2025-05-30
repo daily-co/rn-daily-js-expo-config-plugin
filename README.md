@@ -13,6 +13,7 @@ Ensure you use versions that work together!
 
 | `expo` | `@daily-co/react-native-webrtc` | `@config-plugins/react-native-webrtc` | `@daily-co/react-native-daily-js` | `@daily-co/config-plugin-rn-daily-js` |
 |--------|---------------------------------|---------------------------------------|-----------------------------------|---------------------------------------|
+| 53.x   | 118.0.3-daily.2                 | -                                     | 0.76.0                            | 0.0.9                                 |
 | 52.x   | 118.0.3-daily.2                 | 10.0.0                                | 0.76.0                            | 0.0.8                                 |
 | 52.x   | 118.0.3-daily.2                 | 10.0.0                                | 0.70.0                            | 0.0.7                                 |
 | 51.x   | 118.0.3-daily.2                 | 9.0.0                                 | 0.64.0                            | 0.0.6                                 |
@@ -21,6 +22,7 @@ Ensure you use versions that work together!
 | 48.x   | 111.0.0-daily.1                 | 6.0.0                                 | 0.43.0                            | 0.0.2                                 |
 | 47.x   | 1.94.1-daily.8                  | 5.0.0                                 | 0.36.0                            | 0.0.1                                 |
 
+> IMPORTANT: Starting with version 0.0.9, you no longer need to install `@config-plugins/react-native-webrtc`. You only need to install `@daily-co/config-plugin-rn-daily-js`.
 
 ## Expo installation
 

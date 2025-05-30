@@ -1,6 +1,6 @@
 {
   "name": "@daily-co/config-plugin-rn-daily-js",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Config plugin to setup react-native-daily-js on prebuild",
   "main": "build/withDaily.js",
   "types": "build/withDaily.d.ts",
@@ -26,7 +26,7 @@
     "preset": "expo-module-scripts"
   },
   "peerDependencies": {
-    "expo": "^52.0.0"
+    "expo": "^53.0.0"
   },
   "devDependencies": {
     "expo-module-scripts": "^4.1.7",
