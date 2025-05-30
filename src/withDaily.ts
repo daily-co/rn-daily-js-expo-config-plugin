@@ -18,13 +18,21 @@ const withAppBuildGradleModified: ConfigPlugin<void> = (
 const withDaily: ConfigPlugin<DailyPermissionsProps> = (
   config, props = {}
 ) => {
-  const { enableScreenShare = false } = props;
+  const {
+    enableCamera = true,
+    enableMicrophone = true,
+    enableScreenShare = false
+  } = props;
 
   // Fixing the issue from Expo with Hermes
   // https://github.com/expo/expo/issues/17450
   config = withAppBuildGradleModified(config);
 
   config = withPermissions(config, props);
+
+  const serviceTypes: string[] = [];
+  if (enableCamera) serviceTypes.push("camera");
+  if (enableMicrophone) serviceTypes.push("microphone");
 
   config = withAndroidManifest(config, (config) => {
     const application = AndroidConfig.Manifest.getMainApplication(config.modResults);
@@ -35,8 +43,7 @@ const withDaily: ConfigPlugin<DailyPermissionsProps> = (
       $: {
         "android:name":  "com.daily.reactlibrary.DailyOngoingMeetingForegroundService",
         "android:exported": "false",
-        // @ts-ignore
-        "android:foregroundServiceType": "camera|microphone"
+        "android:foregroundServiceType": serviceTypes.join("|"),
       },
     })
 
