@@ -3,6 +3,7 @@ import {
 } from "@expo/config-plugins";
 import withIosBroadcastExtension from "./withIosBroadcastExtension";
 import withIosScreenCapture from "./withIosScreenCapture";
+import {DailyPermissionsProps, withPermissions} from "./withPermissions";
 
 const withAppBuildGradleModified: ConfigPlugin<void> = (
   config
@@ -14,24 +15,24 @@ const withAppBuildGradleModified: ConfigPlugin<void> = (
   });
 };
 
-type DailyProps = {
-  enableScreenShare?: boolean;
-};
-
-const withDaily: ConfigPlugin<DailyProps> = (
+const withDaily: ConfigPlugin<DailyPermissionsProps> = (
   config, props = {}
 ) => {
-  const { enableScreenShare = false } = props;
+  const {
+    enableCamera = true,
+    enableMicrophone = true,
+    enableScreenShare = false
+  } = props;
 
   // Fixing the issue from Expo with Hermes
   // https://github.com/expo/expo/issues/17450
   config = withAppBuildGradleModified(config);
 
-  // Android
-  config = AndroidConfig.Permissions.withPermissions(config, [
-    "android.permission.FOREGROUND_SERVICE", "android.permission.FOREGROUND_SERVICE_CAMERA", "android.permission.FOREGROUND_SERVICE_MICROPHONE",
-    "android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION", "android.permission.POST_NOTIFICATIONS"
-  ]);
+  config = withPermissions(config, props);
+
+  const serviceTypes: string[] = [];
+  if (enableCamera) serviceTypes.push("camera");
+  if (enableMicrophone) serviceTypes.push("microphone");
 
   config = withAndroidManifest(config, (config) => {
     const application = AndroidConfig.Manifest.getMainApplication(config.modResults);
@@ -42,8 +43,7 @@ const withDaily: ConfigPlugin<DailyProps> = (
       $: {
         "android:name":  "com.daily.reactlibrary.DailyOngoingMeetingForegroundService",
         "android:exported": "false",
-        // @ts-ignore
-        "android:foregroundServiceType": "camera|microphone"
+        "android:foregroundServiceType": serviceTypes.join("|"),
       },
     })
 
