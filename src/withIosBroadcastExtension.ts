@@ -183,6 +183,7 @@ const addXCConfigurationList = (
     CLANG_WARN_UNGUARDED_AVAILABILITY: 'YES_AGGRESSIVE',
     // CODE_SIGN_ENTITLEMENTS: `${appName}/${appName}.entitlements`,
     CODE_SIGN_STYLE: 'Automatic',
+    ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES: 'YES',
     CURRENT_PROJECT_VERSION: currentProjectVersion,
     GCC_C_LANGUAGE_STANDARD: 'gnu11',
     GENERATE_INFOPLIST_FILE: 'YES',
@@ -401,15 +402,6 @@ const addBuildPhases = (
     buildPath
   );
   console.log(`Added PBXFrameworksBuildPhase ${replayKitFrameworksBuildPhaseUuid}`);
-  const { uuid: dailyFrameworksBuildPhaseUuid } = proj.addBuildPhase(
-      [frameworkPaths.dailyScreenShare],
-      'PBXCopyFilesBuildPhase',
-      'Frameworks',
-      targetUuid,
-      'app_extension',
-      buildPath
-  );
-  console.log(`Added PBXCopyFilesBuildPhase ${dailyFrameworksBuildPhaseUuid}`);
 
   // Resources build phase
   const { uuid: resourcesBuildPhaseUuid } = proj.addBuildPhase(
