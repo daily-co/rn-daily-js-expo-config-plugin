@@ -10,13 +10,14 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 import { quoted } from './utils';
+import { DailyPermissionsProps } from "./withPermissions";
 
 const EXTENSION_NAME = 'ScreenCaptureExtension';
 const IPHONE_DEPLOYMENT_TARGET = '15.1';
-const withIosBroadcastExtension: ConfigPlugin = (config) => {
+const withIosBroadcastExtension: ConfigPlugin<DailyPermissionsProps> = (config, props = {}) => {
   config = withBroadcastExtensionHandler(config);
   config = withBroadcastExtensionPlist(config);
-  config = withBroadcastExtensionXcodeTarget(config);
+  config = withBroadcastExtensionXcodeTarget(config, props);
   return config;
 };
 
@@ -69,7 +70,7 @@ const withBroadcastExtensionPlist: ConfigPlugin = (config) => {
   ]);
 };
 
-const withBroadcastExtensionXcodeTarget: ConfigPlugin = (config) => {
+const withBroadcastExtensionXcodeTarget: ConfigPlugin<DailyPermissionsProps> = (config, props = {}) => {
   return withXcodeProject(config, async (config) => {
     const appName = config.modRequest.projectName!;
     const extensionName = EXTENSION_NAME;
@@ -84,7 +85,7 @@ const withBroadcastExtensionXcodeTarget: ConfigPlugin = (config) => {
       extensionBundleIdentifier,
       currentProjectVersion,
       marketingVersion,
-    });
+    }, props);
 
     return config;
   });
@@ -106,7 +107,8 @@ const addBroadcastExtensionXcodeTarget = async (
     extensionBundleIdentifier,
     currentProjectVersion,
     marketingVersion,
-  }: AddXcodeTargetParams
+  }: AddXcodeTargetParams,
+  props = {},
 ) => {
   if (proj.getFirstProject().firstProject.targets?.length > 1) return;
 
@@ -119,7 +121,7 @@ const addBroadcastExtensionXcodeTarget = async (
     marketingVersion,
     extensionName,
     appName,
-  });
+  }, props);
 
   const productFile = addProductFile(proj, extensionName, groupName);
 
@@ -171,7 +173,8 @@ const addXCConfigurationList = (
     marketingVersion,
     extensionName,
     appName,
-  }: AddXcodeTargetParams
+  }: AddXcodeTargetParams,
+  props = {} as DailyPermissionsProps,
 ) => {
   const commonBuildSettings: any = {
     CLANG_ANALYZER_NONNULL: 'YES',
@@ -187,7 +190,7 @@ const addXCConfigurationList = (
     GCC_C_LANGUAGE_STANDARD: 'gnu11',
     GENERATE_INFOPLIST_FILE: 'YES',
     INFOPLIST_FILE: `${extensionName}/Info.plist`,
-    INFOPLIST_KEY_CFBundleDisplayName: `${extensionName}`,
+    INFOPLIST_KEY_CFBundleDisplayName: props?.screenShareExtensionDisplayName || extensionName,
     INFOPLIST_KEY_NSHumanReadableCopyright: quoted(''),
     IPHONEOS_DEPLOYMENT_TARGET: IPHONE_DEPLOYMENT_TARGET,
     LD_RUNPATH_SEARCH_PATHS: quoted(
