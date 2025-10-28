@@ -1,4 +1,4 @@
-import { type ConfigPlugin, withInfoPlist } from "expo/config-plugins";
+import { type ConfigPlugin, withInfoPlist } from "@expo/config-plugins";
 import { AndroidConfig } from "@expo/config-plugins";
 
 const CAMERA_USAGE = "Allow $(PRODUCT_NAME) to access your camera";
