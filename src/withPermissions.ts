@@ -10,6 +10,7 @@ export type DailyPermissionsProps = {
     enableMicrophone?: boolean;
     cameraPermission?: string;
     microphonePermission?: string;
+    screenShareExtensionDisplayName?: string;
 };
 
 export const withPermissions: ConfigPlugin<DailyPermissionsProps> = (

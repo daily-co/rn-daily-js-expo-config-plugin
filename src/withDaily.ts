@@ -53,8 +53,9 @@ const withDaily: ConfigPlugin<DailyPermissionsProps> = (
   if (enableScreenShare) {
     config = withPlugins(config, [
       withIosScreenCapture,
-      withIosBroadcastExtension,
     ]);
+
+    config = withIosBroadcastExtension(config, props)
   }
 
   return config;
