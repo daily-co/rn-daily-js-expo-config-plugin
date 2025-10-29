@@ -13,6 +13,7 @@ Ensure you use versions that work together!
 
 | `expo` | `@daily-co/react-native-webrtc` | `@config-plugins/react-native-webrtc` | `@daily-co/react-native-daily-js` | `@daily-co/config-plugin-rn-daily-js` |
 |--------|---------------------------------|---------------------------------------|-----------------------------------|---------------------------------------|
+| 54.x   | 124.0.6-daily.1                 | -                                     | 0.82.0                            | 0.0.11                                |
 | 53.x   | 124.0.6-daily.1                 | -                                     | 0.81.0                            | 0.0.10                                |
 | 53.x   | 118.0.3-daily.2                 | -                                     | 0.76.0                            | 0.0.9                                 |
 | 52.x   | 118.0.3-daily.2                 | 10.0.0                                | 0.76.0                            | 0.0.8                                 |
