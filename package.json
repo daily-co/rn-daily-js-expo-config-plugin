@@ -35,5 +35,9 @@
   "dependencies": {
     "expo-build-properties": "~0.14.8",
     "@expo/config-plugins": "^10.1.2"
+  },
+  "resolutions": {
+    "react-server-dom-webpack": "^19.1.0",
+    "@tootallnate/once": "^3.0.1"
   }
 }
