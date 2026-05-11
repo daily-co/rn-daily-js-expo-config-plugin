@@ -37,6 +37,7 @@
     "@expo/config-plugins": "^55.0.8"
   },
   "resolutions": {
-    "@tootallnate/once": ">=3.0.1"
+    "@tootallnate/once": ">=3.0.1",
+    "@babel/plugin-transform-modules-systemjs": ">=7.29.4"
   }
 }
