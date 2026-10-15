@@ -247,9 +247,6 @@ const addXCConfigurationList = (
     proj.getFirstTarget().firstTarget.name
   );
 
-  proj.updateBuildProperty('IPHONEOS_DEPLOYMENT_TARGET', IPHONE_DEPLOYMENT_TARGET);
-
-
   return xCConfigurationList;
 };
 
